@@ -420,7 +420,7 @@ body {
 #content main .table-data .order table th {
   padding-bottom: 12px;
   font-size: 13px;
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid var(--grey);
 }
 #content main .table-data .order table td {
@@ -555,4 +555,20 @@ body {
   margin: 10px 2px;
   font-size: 0.8em;
   font-weight: bold;
+}
+
+th,
+td {
+  padding: 20px;
+  text-align: center; /* Rata tengah teks di setiap sel */
+}
+
+tr {
+  vertical-align: middle; /* Posisikan setiap baris di tengah-tengah kolom */
+}
+
+th {
+  font-weight: bold; /* Teks header dijadikan bold */
+  text-align: center; /* Rata tengah teks di setiap sel header */
+  vertical-align: middle; /* Posisikan teks header di tengah-tengah kolom */
 }
