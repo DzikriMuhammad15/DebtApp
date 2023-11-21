@@ -23,9 +23,14 @@ const TransactionSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
-    paid: {
-        type: Boolean,
+    paid: [{ type: mongoose.Schema.Types.ObjectId, ref: "paymenr" }],
+    remaining: {
+        type: Number,
         required: true
+    },
+    lunas: {
+        type: Boolean,
+        default: false
     }
 })
 

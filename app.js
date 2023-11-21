@@ -9,6 +9,7 @@ const authRoute = require("./routes/authRoutes");
 const authMiddlewares = require("./middlewares/authMiddlewares");
 const socialRoutes = require("./routes/socialRoutes");
 const debtRoutes = require("./routes/debtRoutes")
+const paymentRoutes = require("./routes/paymentRoutes");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/dashboard');
@@ -46,6 +47,7 @@ app.use('/dashboard', authMiddlewares.protectRoute, usersRouter);
 app.use('/social', authMiddlewares.protectRoute, socialRoutes);
 app.use("/auth", authRoute);
 app.use("/debt", authMiddlewares.protectRoute, debtRoutes);
+app.use("/payment", authMiddlewares.protectRoute, paymentRoutes);
 app.use("/adminHub", (req, res) => {
   res.render("adminHub")
 })

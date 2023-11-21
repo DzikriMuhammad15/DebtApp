@@ -14,14 +14,6 @@ const checkVerification = function (bool) {
     }
 }
 
-const checkPaid = function (bool) {
-    if (bool) {
-        return "paid";
-    }
-    else {
-        return "not paid";
-    }
-}
 
 // ! ERROR HANDLING
 const handleErrors = (err) => {
@@ -47,6 +39,10 @@ const handleErrors = (err) => {
     return errorObj;
 }
 
+const hitungPaid = async function (arrayPaid) {
+    // ! selesaikan nanti
+}
+
 // ! REALISASI
 module.exports.getDebtMain = async (req, res) => {
     // TODO ambil res.locals.user dulu untuk mendapatkan current user
@@ -62,7 +58,8 @@ module.exports.getDebtMain = async (req, res) => {
                 amount: el.amount,
                 description: el.description,
                 verified: checkVerification(el.verified),
-                paid: checkPaid(el.paid)
+                paid: el.paid,
+                remaining: el.remaining
             };
         }));
         // TODO ambil semua row di mana current user menjadi hutang dengan verifiednya false(melakukan verify request debt) kemudian simpan dalam variable requestDebt
@@ -75,7 +72,8 @@ module.exports.getDebtMain = async (req, res) => {
                 amount: el.amount,
                 description: el.description,
                 verified: checkVerification(el.verified),
-                paid: checkPaid(el.paid)
+                paid: el.paid,
+                remaining: el.remaining
             };
         }));
 
@@ -115,7 +113,7 @@ module.exports.createDebtRequest = async (req, res) => {
         // TODO ambil res.locals.user untuk mendapatkan current user
         const currentUser = res.locals.user;
         // TODO create record di transaction dengan currentUser sebagai piutang
-        const result = await Transaction.create({ idHutang: idHutang, idPiutang: currentUser._id, amount: amount, description: description, verified: false, paid: false });
+        const result = await Transaction.create({ idHutang: idHutang, idPiutang: currentUser._id, amount: amount, description: description, verified: false, remaining: amount });
         // TODO kembalikan pesan berhasil jika berhasil membuatnya
         res.status(200).json({ result: result });
     }

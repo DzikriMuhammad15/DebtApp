@@ -231,4 +231,54 @@ $(document).on("click", ".createNewDebtButton", async (e) => {
 });
 
 
+const payDebtButton = document.getElementsByClassName("payDebt");
+if (payDebtButton.length > 0) {
+	for (let i = 0; i < payDebtButton.length; i++) {
+		payDebtButton[i].addEventListener("click", async function (e) {
+			e.preventDefault();
+			const idTransaction = payDebtButton[i].getAttribute("data-id");
+			// munculkan modal
+			var modal = new bootstrap.Modal(document.getElementById("modalCreatePaymentRequest"));
+			modal.show();
+			const submitPayButton = document.getElementById("submitPayButton");
+			const amount = document.getElementById("amountInputPay");
+			const description = document.getElementById("descriptionInputPay");
+			submitPayButton.addEventListener("click", async function (e) {
+				e.preventDefault();
+				const url = "/payment/createPayment";
+				const data = { amount: amount.value, description: description.value, idTransaction };
+				const option = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(data)
+				}
+				const result = await fetch(url, option);
+				location.assign("/payment");
+			})
+		})
+	}
+}
+
+const verifyPaymentButton = document.getElementsByClassName("verifyPayment");
+if (verifyPaymentButton.length > 0) {
+	for (let i = 0; i < verifyPaymentButton.length; i++) {
+		verifyPaymentButton[i].addEventListener("click", async function (e) {
+			e.preventDefault();
+			const url = "/payment/verifyPayment";
+			const idPayment = verifyPaymentButton[i].getAttribute("data-id");
+			const data = { idPayment };
+			const option = {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			}
+			const result = await fetch(url, option);
+			location.assign("/payment")
+		})
+	}
+}
 
