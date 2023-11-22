@@ -1,6 +1,7 @@
 const Payment = require("../models/Payment");
 const User = require("../models/User");
 const Transaction = require("../models/Transaction");
+const { error } = require("jquery");
 
 const pemetaanKeNama = async function (idUser) {
     const hasil = await User.findOne({ _id: idUser });
@@ -15,12 +16,28 @@ const checkVerification = function (bool) {
     }
 }
 
+// ! ERROR HANDLING
+const handleErrors = (err) => {
+    const errorObj = {
+        amount: ""
+    }
+    if (err.message == "transaction validation failed: amount: Path `amount` is required.") {
+        errorObj.amount = "Please enter amount of payment";
+    }
+    if (err.message == "payment validation failed: amount: Path `amount` is required.") {
+        errorObj.amount = "Please enter amount of payment";
+    }
+    if (err.message == "Amount of payment is greater than remaining debt") {
+        errorObj.amount = "Amount of payment is greater than remaining debt";
+    }
+    return errorObj;
+}
+
 
 // ! REALISASI
 module.exports.getPaymentMain = async (req, res) => {
     // render
     // menampilkan : keseluruhan transaction yang belum lunas (masih ada remaining), payment yang masih requested
-
 
     // TODO ambil res.locals.user dulu untuk mendapatkan current user
     const currentUser = res.locals.user;
@@ -67,13 +84,19 @@ module.exports.createPayment = async (req, res) => {
         // ambil dulu idTransaction, amount, descripton
         const { idTransaction, amount, description } = req.body;
         const transaction = await Transaction.findOne({ _id: idTransaction });
+        // TODO check dulu apakah amountnya lebih besar dari remainingnya atau tidak
+        if (amount > transaction.remaining) {
+            throw new Error("Amount of payment is greater than remaining debt");
+        }
         // lakukan create berdasarkan data yang dimiliki
         await Payment.create({ idTransaction: idTransaction, amount: amount, description: description, verified: false, date: new Date(), idHutang: transaction.idHutang, idPiutang: transaction.idPiutang });
         // kembalikan ok
         res.status(200).json({ ok: "ok" });
     }
     catch (err) {
-        console.log(err);
+        console.log(err.message);
+        const error = handleErrors(err);
+        res.status(400).json({ error: error });
     }
 }
 
@@ -87,6 +110,10 @@ module.exports.verifyPayment = async (req, res) => {
         const idTransaction = payment.idTransaction;
         // push payment ke paid transaction yang bersangkutan
         await Transaction.findOneAndUpdate({ _id: idTransaction }, { $push: { paid: idPayment } });
+        // kurangi remaining dari transaction
+        const transaction = await Transaction.findOne({ _id: idTransaction });
+        const hasil = parseInt(transaction.remaining) - parseInt(payment.amount)
+        await Transaction.findOneAndUpdate({ _id: idTransaction }, { remaining: hasil });
         // ubah verified payment menjadi true
         await Payment.findOneAndUpdate({ _id: idPayment }, { verified: true });
         // kembalikan ok

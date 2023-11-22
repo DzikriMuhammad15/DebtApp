@@ -245,6 +245,8 @@ if (payDebtButton.length > 0) {
 			const description = document.getElementById("descriptionInputPay");
 			submitPayButton.addEventListener("click", async function (e) {
 				e.preventDefault();
+				const amountError = document.getElementById("amountErrorDiv");
+				amountError.textContent = "";
 				const url = "/payment/createPayment";
 				const data = { amount: amount.value, description: description.value, idTransaction };
 				const option = {
@@ -255,7 +257,15 @@ if (payDebtButton.length > 0) {
 					body: JSON.stringify(data)
 				}
 				const result = await fetch(url, option);
-				location.assign("/payment");
+				const hasil = await result.json();
+				console.log(amountError);
+				if (hasil.ok) {
+					location.assign("/payment");
+				}
+				else {
+					// error
+					amountError.textContent = hasil.error.amount
+				}
 			})
 		})
 	}
