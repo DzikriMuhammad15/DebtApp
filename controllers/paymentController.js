@@ -3,10 +3,29 @@ const User = require("../models/User");
 const Transaction = require("../models/Transaction");
 const { error } = require("jquery");
 
+const idToEmail = async (id) => {
+    try {
+        const hasil = await User.findOne({ _id: id });
+        return hasil ? hasil.email : null;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 const pemetaanKeNama = async function (idUser) {
     const hasil = await User.findOne({ _id: idUser });
     return `${hasil.firstName} ${hasil.lastName}`;
 }
+const checkLunas = function (bool) {
+    if (bool) {
+        return "Lunas";
+    }
+    else {
+        return "Belum Lunas";
+    }
+}
+
 const checkVerification = function (bool) {
     if (bool) {
         return "verified";
@@ -51,7 +70,7 @@ module.exports.getPaymentMain = async (req, res) => {
                 namaPiutang: await pemetaanKeNama(el.idPiutang),
                 amount: el.amount,
                 description: el.description,
-                verified: checkVerification(el.verified),
+                lunas: checkLunas(el.lunas),
                 paid: 0,
                 remaining: el.remaining
             };
@@ -75,7 +94,7 @@ module.exports.getPaymentMain = async (req, res) => {
         // res.status(200).json({ history, requestDebt });
     }
     catch (err) {
-        res.status(400).json({ error: err });
+        res.status(400).json(err.message);
     }
 }
 
@@ -113,11 +132,36 @@ module.exports.verifyPayment = async (req, res) => {
         // kurangi remaining dari transaction
         const transaction = await Transaction.findOne({ _id: idTransaction });
         const hasil = parseInt(transaction.remaining) - parseInt(payment.amount)
-        await Transaction.findOneAndUpdate({ _id: idTransaction }, { remaining: hasil });
+        const baru = await Transaction.findOneAndUpdate({ _id: idTransaction }, { remaining: hasil }, { new: true });
+
+        // cek dulu kalau remainingnya nol, set lunas == true
+        if (baru.remaining == 0) {
+            await Transaction.findByIdAndUpdate({ _id: idTransaction }, { lunas: true });
+        }
         // ubah verified payment menjadi true
         await Payment.findOneAndUpdate({ _id: idPayment }, { verified: true });
         // kembalikan ok
         res.status(200).json({ ok: "ok" });
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+module.exports.getPaymentByArrayOfId = async (req, res) => {
+    try {
+        const { arrayOfId } = req.body;
+        // todo ambil data dari db
+        const hasil = await Payment.find({ _id: { $in: arrayOfId } });
+        const hasil1 = await Promise.all(hasil.map(async (item) => {
+            return {
+                ...item.toObject(),
+                emailHutang: await idToEmail(item.idHutang),
+                emailPiutang: await idToEmail(item.idPiutang)
+            }
+        }))
+        // todo kembalikan melalui res.json
+        res.status(200).json(hasil1);
     }
     catch (err) {
         console.log(err);

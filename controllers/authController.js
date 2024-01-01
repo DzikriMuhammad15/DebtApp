@@ -40,6 +40,11 @@ const handleErrors = (err) => {
 
 
 // ! REALISASI
+
+module.exports.homeGet = (req, res) => {
+    res.render("loginRegister");
+}
+
 module.exports.signUpGet = (req, res) => {
     res.render("signup");
 }

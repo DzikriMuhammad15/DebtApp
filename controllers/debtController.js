@@ -137,3 +137,14 @@ module.exports.verifyDebtRequest = async (req, res) => {
         res.status(400).json({ error: err });
     }
 }
+
+module.exports.getTransactionById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const hasil = await Transaction.findOne({ _id: id });
+        res.status(200).json(hasil)
+    }
+    catch (err) {
+        console.log(err);
+    }
+}

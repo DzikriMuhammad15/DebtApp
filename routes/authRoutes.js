@@ -6,6 +6,7 @@ const authController = require("../controllers/authController");
 
 
 // ! TO CONTROLLER
+router.get("/", authController.homeGet);
 router.get("/signup", authController.signUpGet);
 router.post("/signup", authController.signUpPost);
 router.get("/login", authController.loginGet);

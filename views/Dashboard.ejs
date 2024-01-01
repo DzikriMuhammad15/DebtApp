@@ -17,7 +17,7 @@
       integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/stylesheets/DashBoardStyle.css" />
+    <link rel="stylesheet" href="/stylesheets/DashboardStyle.css" />
 
     <title>DebtApp</title>
   </head>
@@ -138,14 +138,26 @@
             <li>
               <i class="bx bxs-calendar-check"></i>
               <span class="text">
-                <h3>Rp10.000</h3>
+                <% if (piutang1.length > 0) { %> <% var piutang = 0; %> <%
+                piutang1.forEach(element => { %> <% piutang = piutang +
+                element.remaining; %> <% }); %>
+                <h3>Rp<%= piutang %></h3>
+                <% } else { %>
+                <h3>Rp0</h3>
+                <% } %>
                 <p>Piutang</p>
               </span>
             </li>
             <li>
               <i class="bx bxs-dollar-circle"></i>
               <span class="text">
-                <h3>Rp10.000</h3>
+                <% if (hutang1.length > 0) { %> <% var hutang = 0; %> <%
+                hutang1.forEach(element => { %> <% hutang = hutang +
+                element.remaining; %> <% }); %>
+                <h3>Rp<%= hutang %></h3>
+                <% } else { %>
+                <h3>Rp0</h3>
+                <% } %>
                 <p>Hutang</p>
               </span>
             </li>
@@ -154,88 +166,87 @@
           <div class="table-data">
             <div class="order">
               <div class="head">
-                <h3>Recent Orders</h3>
-                <i class="bx bx-search"></i>
-                <i class="bx bx-filter"></i>
+                <h3>Piutang</h3>
               </div>
               <table>
                 <thead>
                   <tr>
-                    <th>User</th>
-                    <th>Date Order</th>
+                    <th>Berhutang</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Remaining</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
+                  <% piutang1.forEach(element => { %>
                   <tr>
                     <td>
                       <img src="/images/people.png" />
-                      <p>John Doe</p>
+                      <p><%= element.emailHutang %></p>
                     </td>
-                    <td>01-10-2021</td>
-                    <td><span class="status completed">Completed</span></td>
-                  </tr>
-                  <tr>
+                    <td><%= element.description %></td>
+                    <td><%= element.amount %></td>
+                    <td><%= element.remaining %></td>
+                    <% if (element.lunas) { %>
+                    <td><span class="status completed">Lunas</span></td>
+                    <% } else { %>
+                    <td><span class="status process">Piutang</span></td>
+                    <% } %>
                     <td>
-                      <img src="/images/people.png" />
-                      <p>John Doe</p>
+                      <button
+                        class="btn btn-outline-primary btn-sm paymentHistoryButton"
+                        data-id="<%= element._id %>"
+                      >
+                        <span class="text">Payment History</span>
+                      </button>
                     </td>
-                    <td>01-10-2021</td>
-                    <td><span class="status pending">Pending</span></td>
                   </tr>
-                  <tr>
-                    <td>
-                      <img src="/images/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td><span class="status process">Process</span></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="/images/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td><span class="status pending">Pending</span></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="/images/people.png" />
-                      <p>John Doe</p>
-                    </td>
-                    <td>01-10-2021</td>
-                    <td><span class="status completed">Completed</span></td>
-                  </tr>
+                  <% }); %>
                 </tbody>
               </table>
             </div>
-            <div class="todo">
+            <div class="order">
               <div class="head">
-                <h3>Reminder</h3>
+                <h3>Hutang</h3>
               </div>
-              <ul class="todo-list">
-                <li class="completed">
-                  <p>Todo List</p>
-                  <i class="bx bx-dots-vertical-rounded"></i>
-                </li>
-                <li class="completed">
-                  <p>Todo List</p>
-                  <i class="bx bx-dots-vertical-rounded"></i>
-                </li>
-                <li class="not-completed">
-                  <p>Todo List</p>
-                  <i class="bx bx-dots-vertical-rounded"></i>
-                </li>
-                <li class="completed">
-                  <p>Todo List</p>
-                  <i class="bx bx-dots-vertical-rounded"></i>
-                </li>
-                <li class="not-completed">
-                  <p>Todo List</p>
-                  <i class="bx bx-dots-vertical-rounded"></i>
-                </li>
-              </ul>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Memiliki Hutang</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Remaining</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% hutang1.forEach(element => { %>
+                  <tr>
+                    <td>
+                      <img src="/images/people.png" />
+                      <p><%= element.emailPiutang %></p>
+                    </td>
+                    <td><%= element.description %></td>
+                    <td><%= element.amount %></td>
+                    <td><%= element.remaining %></td>
+                    <% if (element.lunas) { %>
+                    <td><span class="status completed">Lunas</span></td>
+                    <% } else { %>
+                    <td><span class="status pending">Hutang</span></td>
+                    <% } %>
+                    <td>
+                      <button
+                        class="btn btn-outline-primary btn-sm paymentHistoryButton"
+                        data-id="<%= element._id %>"
+                      >
+                        <span class="text">Payment History</span>
+                      </button>
+                    </td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
             </div>
           </div>
         </main>
@@ -269,6 +280,51 @@
       </div>
     </div>
     <!-- Modal end -->
+
+    <!-- Modal History -->
+    <!-- Scrollable modal -->
+    <div
+      class="modal fade modal-xl order"
+      id="modalPaymentHistory"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Payment History
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="isiModalPaymentHistory"></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal History End -->
+
+    <!-- Tambahkan jQuery dari CDN sebelum menyertakan Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <!-- Tambahkan Bootstrap JS dan Popper.js setelah jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script src="/javascripts/DashboardScript.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"

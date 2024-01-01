@@ -6,5 +6,6 @@ const router = express.Router();
 router.get("/", debtController.getDebtMain);
 router.post("/createDebtRequest", debtController.createDebtRequest);
 router.put("/verifyDebtRequest", debtController.verifyDebtRequest);
+router.get("/getTransactionById/:id", debtController.getTransactionById);
 
 module.exports = router;

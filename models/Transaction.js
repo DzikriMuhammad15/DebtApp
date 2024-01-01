@@ -23,7 +23,7 @@ const TransactionSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
-    paid: [{ type: mongoose.Schema.Types.ObjectId, ref: "paymenr" }],
+    paid: [{ type: mongoose.Schema.Types.ObjectId, ref: "payment" }],
     remaining: {
         type: Number,
         required: true

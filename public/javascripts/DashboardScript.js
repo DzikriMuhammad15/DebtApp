@@ -292,3 +292,79 @@ if (verifyPaymentButton.length > 0) {
 	}
 }
 
+const paymentHistoryButton = document.querySelectorAll(".paymentHistoryButton");
+console.log(paymentHistoryButton);
+
+if (paymentHistoryButton.length > 0) {
+	for (let i = 0; i < paymentHistoryButton.length; i++) {
+		paymentHistoryButton[i].addEventListener("click", async (e) => {
+			e.preventDefault();
+			try {
+				const id = paymentHistoryButton[i].getAttribute("data-id")
+				// todo ambil dulu transaksi yang bersangkutan
+				const url = `/debt/getTransactionById/${id}`;
+				const option = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+				}
+				const result = await fetch(url, option);
+				const hasil = await result.json();
+				const payments = hasil.paid;
+				// console.log(payments);
+				const url1 = "/payment/getPaymentByArrayOfId";
+				const data1 = { arrayOfId: payments };
+				const option1 = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(data1)
+				}
+				const result1 = await fetch(url1, option1);
+				const hasil1 = await result1.json();
+				console.log(hasil1);
+				// todo masukkan menjadi innerHTML
+				let innerHtml = `<div class="order">
+				<table>
+                <thead>
+                  <tr>
+                    <th>Melakukan Pembayaran</th>
+                    <th>Menerima Pembayaran</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>`
+				hasil1.forEach((element => {
+					let temp = `<tr>
+                    <td>${element.emailHutang}</td>
+                    <td>${element.emailPiutang}</td>
+                    <td>${element.description}</td>
+                    <td>${element.date}</td>
+                    <td>${element.amount}</td>
+                  </tr>`
+					innerHtml = innerHtml + temp;
+				}))
+				innerHtml = innerHtml + `</tbody >
+				  </table > </div>`
+
+				const isiModalPaymentHistory = document.getElementById("isiModalPaymentHistory");
+				isiModalPaymentHistory.innerHTML = innerHtml;
+				// todo show modal
+
+				var modal = new bootstrap.Modal(document.getElementById("modalPaymentHistory"), {
+					keyboard: false,
+					backdrop: 'static'
+				});
+				modal.show();
+			}
+			catch (err) {
+				console.log(err);
+			}
+		})
+	}
+}
+

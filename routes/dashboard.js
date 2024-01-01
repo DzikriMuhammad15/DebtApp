@@ -1,12 +1,11 @@
 var express = require('express');
 var router = express.Router();
+const dashboardController = require("../controllers/dashboardController.js")
 
 
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.render("Dashboard");
-});
+router.get('/', dashboardController.renderDashboard);
 
 
 
