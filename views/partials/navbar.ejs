@@ -15,7 +15,7 @@
     <img src="/images/people.png" />
   </div>
   <div class="action">
-    <div class="menu">
+    <div class="menu" id="profile">
       <h3>
         <%= user.firstName %>
         <div><%= user.email %></div>
@@ -27,9 +27,18 @@
         </li>
         <li>
           <span class="material-icons icons-size">account_balance_wallet</span>
-          <a href="#">Logout</a>
+          <a
+            class="btn btnLogout"
+            data-bs-toggle="modal"
+            data-bs-target="#modalLogout"
+            >Logout</a
+          >
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
+<!-- MODAL CHANGE PASSWORD -->
+
+<!-- MODAL CHANGE PASSWORD END-->

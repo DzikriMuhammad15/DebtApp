@@ -14,19 +14,6 @@ allSideMenu.forEach(item => {
 
 
 
-// TOGGLE SIDEBAR
-const menuBar = document.querySelector('#content nav .bx.bx-menu');
-const sidebar = document.getElementById('sidebar');
-const logoutButton = document.querySelector(".btnLogout");
-
-menuBar.addEventListener('click', function () {
-	sidebar.classList.toggle('hide');
-})
-
-logoutButton.addEventListener("click", () => {
-	sidebar.classList.toggle('hide');
-})
-
 
 
 
