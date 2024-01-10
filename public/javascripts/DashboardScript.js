@@ -326,7 +326,7 @@ if (paymentHistoryButton.length > 0) {
 				const hasil1 = await result1.json();
 				console.log(hasil1);
 				// todo masukkan menjadi innerHTML
-				let innerHtml = `<div class="order">
+				let innerHtml = `<div class="order modalPaymentHistoryScrool">
 				<table>
                 <thead>
                   <tr>

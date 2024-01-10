@@ -572,3 +572,7 @@ th {
   text-align: center; /* Rata tengah teks di setiap sel header */
   vertical-align: middle; /* Posisikan teks header di tengah-tengah kolom */
 }
+
+.modalPaymentHistoryScrool {
+  overflow-x: auto;
+}

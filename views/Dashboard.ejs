@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Profile -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/stylesheets/profile.css" />
+
     <!-- Boxicons -->
     <link
       href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
@@ -90,27 +102,7 @@
       <!-- CONTENT -->
       <section id="content">
         <!-- NAVBAR -->
-        <nav>
-          <i class="bx bx-menu"></i>
-          <a href="#" class="nav-link">Home</a>
-          <form action="#">
-            <div class="form-input">
-              <input type="search" placeholder="Search..." />
-              <button type="submit" class="search-btn">
-                <i class="bx bx-search"></i>
-              </button>
-            </div>
-          </form>
-          <input type="checkbox" id="switch-mode" hidden />
-          <label for="switch-mode" class="switch-mode"></label>
-          <a href="#" class="notification">
-            <i class="bx bxs-bell"></i>
-            <span class="num">8</span>
-          </a>
-          <a href="#" class="profile">
-            <img src="/images/people.png" />
-          </a>
-        </nav>
+        <%- include('partials/navbar'); -%>
         <!-- NAVBAR -->
 
         <!-- MAIN -->
@@ -346,5 +338,6 @@
       integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
       crossorigin="anonymous"
     ></script>
+    <script src="/javascripts/profileScript.js"></script>
   </body>
 </html>

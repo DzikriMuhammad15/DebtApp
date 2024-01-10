@@ -1,0 +1,35 @@
+<nav>
+  <i class="bx bx-menu"></i>
+  <a href="#" class="nav-link">Home</a>
+  <form action="#">
+    <div class="form-input">
+      <input type="search" placeholder="Search..." />
+      <button type="submit" class="search-btn">
+        <i class="bx bx-search"></i>
+      </button>
+    </div>
+  </form>
+  <input type="checkbox" id="switch-mode" hidden />
+  <label for="switch-mode" class="switch-mode ms-3"></label>
+  <div href="#" class="profile" onclick="menuToggle();">
+    <img src="/images/people.png" />
+  </div>
+  <div class="action">
+    <div class="menu">
+      <h3>
+        <%= user.firstName %>
+        <div><%= user.email %></div>
+      </h3>
+      <ul>
+        <li>
+          <span class="material-icons icons-size">mode</span>
+          <a href="#">Change Password</a>
+        </li>
+        <li>
+          <span class="material-icons icons-size">account_balance_wallet</span>
+          <a href="#">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
