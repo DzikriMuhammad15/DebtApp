@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt")
 
 // ! MEMBUAT JWT
 const maxAge = 7 * 24 * 60 * 60;
@@ -101,4 +102,41 @@ module.exports.logoutGet = (req, res) => {
     res.clearCookie("jwt");
     // TODO redirect ke home
     res.redirect("/");
+}
+
+module.exports.changePassword = async (req, res) => {
+    // todo ambil dulu newPassword dan newPasswordConfirmation dari request
+    const { id, newPassword, newPasswordConfirmation } = req.body;
+    // todo cek dulu apakah newPassword itu ada atau tidak
+    if (newPassword.length > 0) {
+        // todo cek dulu apakah password lebih dari atau sama dengan 6 karakter
+        if (newPassword.length >= 6) {
+            // todo ambil cek apakah confirmation sama dengan newPassword
+            if (newPassword == newPasswordConfirmation) {
+                try {
+                    // todo kalau sama, edit data pada model user untuk mengganti passwordnya (dengan melakukan hash terlebih dahulu)
+                    const salt = await bcrypt.genSalt();
+                    const Updatepassword = await bcrypt.hash(newPassword, salt);
+                    const hasil = await User.findOneAndUpdate({ _id: id }, { password: Updatepassword });
+                    // todo kalau berhasil kembalikan json success sebagai pendanda berhasil
+                    res.status(200).json({ success: "ok" });
+                }
+                catch (err) {
+                    // todo kalau gagal, catch errornya dan masukkan ke dalam error handler
+                    const errorObj = handleErrors(err);
+                    res.status(400).json({ error: errorObj });
+                }
+            }
+            else {
+                // todo kalau tidak sama, kembalikan pesan kesalahan dalam atribut password bahwa password doesn't match
+                res.status(400).json({ error: { password: "password doesn't match" } });
+            }
+        }
+        else {
+            res.status(400).json({ error: { password: "minimum password length is 6 characters" } });
+        }
+    }
+    else {
+        res.status(400).json({ error: { password: "please enter new password" } });
+    }
 }
