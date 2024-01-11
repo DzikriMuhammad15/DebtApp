@@ -14,7 +14,16 @@ allSideMenu.forEach(item => {
 
 
 
+function longRunningOperation() {
+	// Menampilkan overlay atau elemen pemuatan saat operasi dimulai
+	document.getElementById('loading-overlay').style.display = 'flex';
 
+	// Proses operasi yang membutuhkan waktu lama
+	setTimeout(function () {
+		// Selesai, menyembunyikan overlay atau elemen pemuatan
+		document.getElementById('loading-overlay').style.display = 'none';
+	}, 5000); // Contoh: Menunggu 3 detik
+}
 
 
 
@@ -82,6 +91,7 @@ console.log(acceptButtons);
 for (let i = 0; i < acceptButtons.length; i++) {
 	acceptButtons[i].addEventListener('click', async function (e) {
 		e.preventDefault()
+		longRunningOperation();
 		try {
 			// TODO ambil dulu data id yang tersimpan di dalam buttonnya
 			const id = acceptButtons[i].getAttribute("data-id");
@@ -112,6 +122,7 @@ if (searchAddFriend.length > 0) {
 	searchAddFriend[0].addEventListener('click', async function (e) {
 		try {
 			e.preventDefault();
+			longRunningOperation();
 			var input = document.getElementById("emailAddFriend").value;
 			location.assign(`/social/addFriend/searchEmail/${input}`)
 			// const url = "/social/addFriend/searchEmail";
@@ -136,6 +147,7 @@ console.log(buttonAccept)
 if (buttonAccept.length > 0) {
 	buttonAccept[0].addEventListener('click', async function (e) {
 		e.preventDefault();
+		longRunningOperation();
 		const url = "/social/requestFriend";
 		const email = buttonAccept[0].getAttribute("data-email");
 		const data = { email: email };
@@ -156,6 +168,7 @@ if (buttonVerify.length > 0) {
 	for (let i = 0; i < buttonVerify.length; i++) {
 		buttonVerify[i].addEventListener("click", async function (e) {
 			e.preventDefault();
+			longRunningOperation();
 			// console.log(buttonVerify[i].getAttribute("data-id"));
 			const url = "/debt/verifyDebtRequest";
 			const transactionId = buttonVerify[i].getAttribute("data-id");
@@ -178,6 +191,7 @@ if (buttonVerify.length > 0) {
 $(document).on("click", ".createNewDebtButton", async (e) => {
 	try {
 		e.preventDefault();
+		longRunningOperation();
 		const emailError = document.querySelector(".email.error");
 		const amountError = document.querySelector(".amount.error");
 
@@ -232,6 +246,7 @@ if (payDebtButton.length > 0) {
 			const description = document.getElementById("descriptionInputPay");
 			submitPayButton.addEventListener("click", async function (e) {
 				e.preventDefault();
+				longRunningOperation();
 				const amountError = document.getElementById("amountErrorDiv");
 				amountError.textContent = "";
 				const url = "/payment/createPayment";
@@ -263,6 +278,7 @@ if (verifyPaymentButton.length > 0) {
 	for (let i = 0; i < verifyPaymentButton.length; i++) {
 		verifyPaymentButton[i].addEventListener("click", async function (e) {
 			e.preventDefault();
+			longRunningOperation();
 			const url = "/payment/verifyPayment";
 			const idPayment = verifyPaymentButton[i].getAttribute("data-id");
 			const data = { idPayment };
@@ -286,6 +302,7 @@ if (paymentHistoryButton.length > 0) {
 	for (let i = 0; i < paymentHistoryButton.length; i++) {
 		paymentHistoryButton[i].addEventListener("click", async (e) => {
 			e.preventDefault();
+			longRunningOperation();
 			try {
 				const id = paymentHistoryButton[i].getAttribute("data-id")
 				// todo ambil dulu transaksi yang bersangkutan
