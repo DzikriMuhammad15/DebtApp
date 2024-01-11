@@ -23,7 +23,12 @@
       <ul>
         <li>
           <span class="material-icons icons-size">mode</span>
-          <a href="#">Change Password</a>
+          <a
+            data-bs-toggle="modal"
+            data-bs-target="#modalChangePassword"
+            class="changePassword"
+            >Change Password</a
+          >
         </li>
         <li>
           <span class="material-icons icons-size">account_balance_wallet</span>
@@ -40,5 +45,55 @@
 </nav>
 
 <!-- MODAL CHANGE PASSWORD -->
+<div
+  class="modal fade"
+  id="modalChangePassword"
+  tabindex="-1"
+  data-id="<%= user._id %>"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Change Password</h1>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label"
+              >New Password</label
+            >
+            <input
+              type="email"
+              class="form-control"
+              id="newPassword"
+              aria-describedby="emailHelp"
+            />
+          </div>
+          <div class="email error"></div>
 
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label"
+              >New Password Confirmation</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="newPasswordConfirmation"
+              aria-describedby="emailHelp"
+            />
+          </div>
+          <div class="changePasswordError error"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Back
+        </button>
+        <button type="button" class="btn btn-primary changePasswordButton">
+          Change Password
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- MODAL CHANGE PASSWORD END-->
