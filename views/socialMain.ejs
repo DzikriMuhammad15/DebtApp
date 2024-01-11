@@ -143,8 +143,24 @@
                       <p><%= `${element.firstName} ${element.lastName}` %></p>
                     </td>
                     <td><%= element.email %></td>
-                    <td>Rp10.000</td>
-                    <td>Rp10.000</td>
+                    <td>
+                      <% let targetObjectId = new
+                      mongoose.Types.ObjectId(element._id); %> <% let hutang =
+                      hutangCurrentUser.filter(el =>
+                      el.idPiutang.equals(targetObjectId)).map(e => e.remaining)
+                      %> <% if(hutang.length > 0) { %> <%=
+                      hutang.reduce((accumulator, currentValue) => accumulator +
+                      currentValue, 0) %> <% } else{ %> <%= 0 %> <% } %>
+                    </td>
+                    <td>
+                      <% let targetObjectId1 = new
+                      mongoose.Types.ObjectId(element._id); %> <% let piutang =
+                      piutangCurrentUser.filter(el =>
+                      el.idHutang.equals(targetObjectId1)).map(e => e.remaining)
+                      %> <% if(piutang.length > 0) { %> <%=
+                      piutang.reduce((accumulator, currentValue) => accumulator
+                      + currentValue, 0) %> <% } else{ %> <%= 0 %> <% } %>
+                    </td>
                     <td>Friend</td>
                   </tr>
                   <% }) %> <% } %>

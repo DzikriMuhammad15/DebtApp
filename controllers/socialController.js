@@ -1,5 +1,6 @@
 const User = require("../models/User");
-
+const Transaction = require("../models/Transaction")
+const mongoose = require("mongoose");
 
 
 
@@ -16,7 +17,11 @@ module.exports.getSocialMain = async (req, res) => {
             let friend = await User.findOne({ _id: element });
             return friend;
         }));
-        res.render("socialMain", { friend: friends });
+        // todo ambil dulu hutang current user dan piutang current user
+        const hutangCurrentUser = await Transaction.find({ idHutang: currentUser._id });
+        const piutangCurrentUser = await Transaction.find({ idPiutang: currentUser._id });
+        console.log({ hutangCurrentUser, piutangCurrentUser });
+        res.render("socialMain", { friend: friends, hutangCurrentUser: hutangCurrentUser, piutangCurrentUser: piutangCurrentUser, mongoose });
 
     }
     catch (err) {
