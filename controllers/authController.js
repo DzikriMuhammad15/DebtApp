@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt")
 
 // ! MEMBUAT JWT
-const maxAge = 7 * 24 * 60 * 60;
+const maxAge = 4 * 30 * 24 * 60 * 60;
 const createToken = (id) => {
     return jwt.sign({ id }, "9cdef459a8f71de4e4016adb9d8b1179e8092221b7154a26234512dae02025fc", { expiresIn: maxAge });
 }
