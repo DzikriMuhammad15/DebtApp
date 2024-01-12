@@ -62,7 +62,7 @@ module.exports.getPaymentMain = async (req, res) => {
     const currentUser = res.locals.user;
     try {
         // TODO ambil semua row di mana current user menjadi Piutang ( menampilkan request debt history) kemudian simpan dalam variable history
-        const transaction = await Transaction.find({ idHutang: res.locals.user._id, lunas: false });
+        const transaction = await Transaction.find({ idHutang: res.locals.user._id, lunas: false, verified: true });
         const transactionResult = await Promise.all(transaction.map(async (el) => {
             return {
                 _id: el._id,
@@ -162,6 +162,17 @@ module.exports.getPaymentByArrayOfId = async (req, res) => {
         }))
         // todo kembalikan melalui res.json
         res.status(200).json(hasil1);
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+module.exports.deletePayment = async (req, res) => {
+    try {
+        const { paymentId } = req.body;
+        const hasil = await Payment.deleteOne({ _id: paymentId });
+        res.status(200).json({ ok: "ok!" });
     }
     catch (err) {
         console.log(err);

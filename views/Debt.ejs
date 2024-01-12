@@ -137,6 +137,7 @@
                     <th>Description</th>
                     <th>Verified</th>
                     <th></th>
+                    <th></th>
                   </tr>
                 </thead>
 
@@ -159,6 +160,16 @@
                         >
                         <i class="bx bxs-cloud-download"></i>
                         <span class="text">Verify</span>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        class="btn btn-danger deleteTransaction"
+                        data-id="<%=element._id%>"
+                      >
+                        >
+                        <i class="bx bxs-cloud-download"></i>
+                        <span class="text">Reject</span>
                       </button>
                     </td>
                   </tr>
@@ -282,7 +293,7 @@
                   id="descriptionInputDebt"
                   aria-describedby="emailHelp"
                 />
-                <div class="description error"></div>
+                <div class="newDebtError error"></div>
               </div>
             </form>
           </div>

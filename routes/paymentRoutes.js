@@ -7,6 +7,7 @@ router.get("/", paymentController.getPaymentMain);
 router.post("/createPayment", paymentController.createPayment);
 router.put("/verifyPayment", paymentController.verifyPayment);
 router.post("/getPaymentByArrayOfId", paymentController.getPaymentByArrayOfId);
+router.post("/deletePayment", paymentController.deletePayment);
 
 
 module.exports = router;

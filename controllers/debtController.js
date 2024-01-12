@@ -36,6 +36,9 @@ const handleErrors = (err) => {
     if (err.message == "transaction validation failed: amount: Path `amount` is required.") {
         errorObj.amount = "Please enter amount of debt";
     }
+    if (err.message == "Please enter amount of debt") {
+        errorObj.amount = "Please enter amount of debt";
+    }
     return errorObj;
 }
 
@@ -106,9 +109,14 @@ module.exports.createDebtRequest = async (req, res) => {
     try {
         // TODO ambil dulu data2 dari req.body
         const { email, amount, description } = req.body;
+        console.log({ email, amount, description });
         const idHutang = await emailToId(email);
         if (! await checkIdFriend(idHutang, res)) {
             throw new Error("Anda tidak berteman dengan pengguna tersebut");
+        }
+        // todo check inputan amount
+        if (amount.length <= 0) {
+            throw new Error("Please enter amount of debt")
         }
         // TODO ambil res.locals.user untuk mendapatkan current user
         const currentUser = res.locals.user;
@@ -120,6 +128,7 @@ module.exports.createDebtRequest = async (req, res) => {
     catch (err) {
         console.log(err.message);
         const errorObj = handleErrors(err);
+        console.log(errorObj);
         res.status(400).json({ error: errorObj });
     }
 }
@@ -143,6 +152,17 @@ module.exports.getTransactionById = async (req, res) => {
         const id = req.params.id;
         const hasil = await Transaction.findOne({ _id: id });
         res.status(200).json(hasil)
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+module.exports.deleteTransaction = async (req, res) => {
+    try {
+        const { transactionId } = req.body;
+        const hasil = await Transaction.deleteOne({ _id: transactionId });
+        res.status(200).json({ ok: "ok!" });
     }
     catch (err) {
         console.log(err);

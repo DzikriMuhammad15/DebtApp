@@ -192,11 +192,9 @@ $(document).on("click", ".createNewDebtButton", async (e) => {
 	try {
 		e.preventDefault();
 		longRunningOperation();
-		const emailError = document.querySelector(".email.error");
-		const amountError = document.querySelector(".amount.error");
+		const newDebtError = document.querySelector(".newDebtError");
 
-		emailError.textContent = "";
-		amountError.textContent = "";
+		newDebtError.textContent = "";
 
 		// TODO: ambil dulu inputan dari form
 		const emailInput = document.getElementById("emailInputDebt");
@@ -218,8 +216,12 @@ $(document).on("click", ".createNewDebtButton", async (e) => {
 		const result = await fetch(url, option);
 		const hasil = await result.json();
 		if (hasil.error) {
-			emailError.textContent = hasil.error.email;
-			amountError.textContent = hasil.error.amount;
+			if (hasil.error.amount.length > 0) {
+				newDebtError.textContent = hasil.error.amount;
+			}
+			if (hasil.error.email.length > 0) {
+				newDebtError.textContent = hasil.error.email;
+			}
 		}
 		if (hasil.result) {
 			location.assign("/debt");
@@ -372,3 +374,61 @@ if (paymentHistoryButton.length > 0) {
 	}
 }
 
+const rejectPayment = document.querySelectorAll(".rejectPayment");
+if (rejectPayment.length > 0) {
+	for (let i = 0; i < rejectPayment.length; i++) {
+		rejectPayment[i].addEventListener("click", async (e) => {
+			e.preventDefault();
+			longRunningOperation();
+			const paymentId = rejectPayment[i].getAttribute("data-id");
+			const url1 = "/payment/deletePayment";
+			const data1 = { paymentId: paymentId };
+			const option1 = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data1)
+			}
+			const result1 = await fetch(url1, option1);
+			const hasil1 = await result1.json();
+			if (hasil1.ok) {
+				// berhasil
+				location.assign("/payment")
+			}
+			else {
+				console.log("something went wrong on back end!");
+			}
+		})
+	}
+}
+
+const rejectTransaction = document.querySelectorAll(".deleteTransaction");
+console.log(rejectTransaction);
+if (rejectTransaction.length > 0) {
+	for (let i = 0; i < rejectTransaction.length; i++) {
+		rejectTransaction[i].addEventListener("click", async (e) => {
+			e.preventDefault();
+			longRunningOperation();
+			const transactionId = rejectTransaction[i].getAttribute("data-id");
+			const url1 = "/debt/deleteTransaction";
+			const data1 = { transactionId: transactionId };
+			const option1 = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data1)
+			}
+			const result1 = await fetch(url1, option1);
+			const hasil1 = await result1.json();
+			if (hasil1.ok) {
+				// berhasil
+				location.assign("/debt");
+			}
+			else {
+				console.log("something went wrong on back end!");
+			}
+		})
+	}
+}
