@@ -29,7 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ! DATABASE CONNECTION
-const DbURI = "mongodb+srv://mrpdzikri:150403Database@cluster0.bkbukuu.mongodb.net/firstProject"
+const DbURI = "dbURI"
 const options = { useNewUrlParser: true, useUnifiedTopology: true }
 mongoose.connect(DbURI, options)
   .then((result) => {
@@ -39,7 +39,7 @@ mongoose.connect(DbURI, options)
   })
   .catch((err) => console.log(err));
 
-
+x
 //! ROUTE
 app.use(authMiddlewares.authCheck);
 app.use('/', indexRouter);
